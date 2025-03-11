@@ -21,18 +21,18 @@ namespace genetic {
 template <int MaxSize = MAX_STACK_SIZE>
 void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
                     const uint64_t n_rows, const uint64_t n_progs) {
+  // Added parallel execution to both for loops with collapse(2)
+  #pragma omp parallel for collapse(2)
   for (uint64_t pid = 0; pid < n_progs; ++pid) {
-    // Did some pre-calculations in the outside loop for speedup
-    program_t curr_p = d_progs + pid; // Current program
-    const int prog_len = curr_p->len;
-    const uint64_t offset = pid * n_rows;
-    node* prog_nodes = curr_p->nodes;
-
-    // Added parallel execution to this for loop
-    #pragma omp parallel for
     for (uint64_t row_id = 0; row_id < n_rows; ++row_id) {
-
-      stack<float, MaxSize> eval_stack;
+      // Did some pre-calculations in the outside loop for speedup
+      program_t curr_p = d_progs + pid; // Current program
+      const int prog_len = curr_p->len;
+      const uint64_t offset = pid * n_rows;
+      node* prog_nodes = curr_p->nodes;
+      //Changed stack to manual
+      float eval_stack[MaxSize];
+      int pos = 0;
       float res = 0.0f;
       float in[2] = {0.0f, 0.0f};
       int end = prog_len - 1;
@@ -41,18 +41,18 @@ void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
       while (end >= 0) {
         if (detail::is_nonterminal(curr_node->t)) {
           const int ar = detail::arity(curr_node->t);
-          in[0] = eval_stack.pop(); // Min arity of function is 1
+          in[0] = eval_stack[--pos]; // Min arity of function is 1
           if (ar > 1)
-            in[1] = eval_stack.pop();
+            in[1] = eval_stack[--pos];
         }
         res = detail::evaluate_node(*curr_node, data, n_rows, row_id, in);
-        eval_stack.push(res);
+        eval_stack[pos++] = res;
         curr_node--;
         end--;
       }
 
       // Outputs stored in col-major format
-      y_pred[offset + row_id] = eval_stack.pop();
+      y_pred[offset + row_id] = eval_stack[--pos];
     }
   }
 }

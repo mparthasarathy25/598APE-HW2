@@ -14,9 +14,27 @@ To clean existing build artifacts run:
 make clean
 ```
 
-This program assumes the following are installed on your machine:
+To run the perf commands within the docker container for determining the execution time (on the host folder):
+```bash
+perf record -g ./genetic_benchmark diabetes
+perf record -g ./genetic_benchmark cancer
+perf record -g ./genetic_benchmark housing
+```
+
+**If you would like to look at the percentages of CPU Usage after running the perf record commands, run perf report**
+
+**If you would like to open the svg files, download the files and drag them into a browser (for example, chrome)**
+
+**Please follow the instructions at the bottom of the README to build and run the docker container**
+
+**This program assumes the following are installed on your machine:**
 * A working C++ compiler (g++ is assumed in the Makefile)
 * make
+
+**There are two commits to focus on in terms of our contributions:**
+* Final Commit (No BVH) - https://github.com/mparthasarathy25/CS598APE-HW1/tree/main
+* BVH Exploration - https://github.com/mparthasarathy25/CS598APE-HW1/tree/eadc70b42a238fc2757648ee70556347f7c05af9
+
 
 Running make builds a sample benchmarking binary(`genetic_benchmark`) which you will use for perf engineering. However, note that the symbolic regression routines exposed in `genetic.h` are general, and can be used as a sub-routine in any data science pipeline (pending a Cython wrapper to Python/Torch).
 
@@ -106,5 +124,6 @@ As the name suggests, we compute the loss/accuracy values according to the metri
 For ease of use and installation, we provide a docker image capable of running and building code here. The source docker file is in /docker (which is essentially a list of commands to build an OS state from scratch). It contains the dependent compilers, and some other nice things.
 
 You can build this yourself manually by running `cd docker && docker build -t <myusername>/598ape`. Alternatively we have pushed a pre-built version to `wsmoses/598ape` on Dockerhub.
+Additionally, in case you are building your own docker image to run, make sure to update the tag in dockerrun.sh as well to reflect your username change.
 
-You can then use the Docker container to build and run your code. If you run `./dockerrun.sh` you will enter an interactive bash session with all the packages from docker installed (that script by default uses `wsmoses/598ape`, feel free to replace it with whatever location you like if you built from scratch). The current directory (aka this folder) is mounted within `/host`. Any files you create on your personal machine will be available there, and anything you make in the container in that folder will be available on your personal machine.
+You can then use the Docker container to build and run your code. If you run `sudo ./dockerrun.sh` you will enter an interactive bash session with all the packages from docker installed (that script by default uses `wsmoses/598ape`, feel free to replace it with whatever location you like if you built from scratch). The current directory (aka this folder) is mounted within `/host`. Any files you create on your personal machine will be available there, and anything you make in the container in that folder will be available on your personal machine.

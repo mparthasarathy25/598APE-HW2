@@ -30,10 +30,9 @@ void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
       const int prog_len = curr_p->len;
       const uint64_t offset = pid * n_rows;
       node* prog_nodes = curr_p->nodes;
-      //Changed stack to manual
+      //Changed stack to manual array
       float eval_stack[MaxSize];
       int pos = 0;
-      float res = 0.0f;
       float in[2] = {0.0f, 0.0f};
       int end = prog_len - 1;
       node* curr_node = prog_nodes + end;
@@ -45,8 +44,7 @@ void execute_kernel(const program_t d_progs, const float *data, float *y_pred,
           if (ar > 1)
             in[1] = eval_stack[--pos];
         }
-        res = detail::evaluate_node(*curr_node, data, n_rows, row_id, in);
-        eval_stack[pos++] = res;
+        eval_stack[pos++] = detail::evaluate_node(*curr_node, data, n_rows, row_id, in);
         curr_node--;
         end--;
       }

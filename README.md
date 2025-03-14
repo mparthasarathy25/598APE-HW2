@@ -21,6 +21,8 @@ perf record -g ./genetic_benchmark cancer
 perf record -g ./genetic_benchmark housing
 ```
 
+**If perf command doesn't work within the docker container, run make in the docker container, then exit the docker container, and run the perf commands above on the bare VM**
+
 **If you would like to look at the percentages of CPU Usage after running the perf record commands, run perf report**
 
 **If you would like to open the svg files, download the files and drag them into a browser (for example, chrome)**

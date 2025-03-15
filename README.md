@@ -34,7 +34,7 @@ perf record -g ./genetic_benchmark housing
 * make
 
 **There are two commits to focus on in terms of our contributions:**
-* Final Commit (No BVH) - https://github.com/mparthasarathy25/CS598APE-HW1/tree/main
+* Final Commit - https://github.com/mparthasarathy25/598APE-HW2/tree/main
 * Parallelism and Data Structure Change Commit - https://github.com/mparthasarathy25/598APE-HW2/tree/e77fbe8c48a5d7cdd070d5f9f01639e05284c73d
 * MakeFile Optimizations Commit - https://github.com/mparthasarathy25/598APE-HW2/tree/26357b8efaf77ff7a6dfc068cb75e7c31da9b4a0
 

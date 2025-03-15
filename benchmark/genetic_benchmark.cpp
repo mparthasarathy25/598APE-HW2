@@ -147,12 +147,15 @@ std::pair<genetic::program*, genetic::program*> getTop2Programs(genetic::program
     genetic::program* best2 = &programs[0];
     
     for (int i = 1; i < size; i++) {
-        if (programs[i].raw_fitness_ < best1->raw_fitness_) {
-            best2 = best1;
-            best1 = &programs[i];
-        } else if (programs[i].raw_fitness_ < best2->raw_fitness_) {
-            best2 = &programs[i];
-        }
+      if (std::isnan(programs[i].raw_fitness_)) {
+        programs[i].raw_fitness_ = std::numeric_limits<float>::max();
+      }
+      if (programs[i].raw_fitness_ < best1->raw_fitness_) {
+          best2 = best1;
+          best1 = &programs[i];
+      } else if (programs[i].raw_fitness_ < best2->raw_fitness_) {
+          best2 = &programs[i];
+      }
     }
     
     return {best1, best2};
@@ -205,12 +208,12 @@ void run_symbolic_regression(const std::string &dataset_file) {
   {
     using namespace genetic;
     params.function_set = {node::type::add, node::type::sub,  node::type::mul,
-                           node::type::abs, node::type::sin,  node::type::cos,
-                           node::type::exp, node::type::fdim, node::type::log};
+                           node::type::abs, node::type::sin,  node::type::cos, 
+                           node::type::fdim, node::type::log};
     // Arity set
     params.arity_set = {{1,
                          {node::type::abs, node::type::sin, node::type::cos,
-                          node::type::exp, node::type::exp, node::type::log}},
+                          node::type::log}},
                         {2,
                          {node::type::add, node::type::sub, node::type::mul,
                           node::type::fdim}}};

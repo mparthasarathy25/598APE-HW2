@@ -35,7 +35,8 @@ perf record -g ./genetic_benchmark housing
 
 **There are two commits to focus on in terms of our contributions:**
 * Final Commit (No BVH) - https://github.com/mparthasarathy25/CS598APE-HW1/tree/main
-* BVH Exploration - https://github.com/mparthasarathy25/CS598APE-HW1/tree/eadc70b42a238fc2757648ee70556347f7c05af9
+* Parallelism and Data Structure Change Commit - https://github.com/mparthasarathy25/598APE-HW2/tree/e77fbe8c48a5d7cdd070d5f9f01639e05284c73d
+* MakeFile Optimizations Commit - https://github.com/mparthasarathy25/598APE-HW2/tree/26357b8efaf77ff7a6dfc068cb75e7c31da9b4a0
 
 
 Running make builds a sample benchmarking binary(`genetic_benchmark`) which you will use for perf engineering. However, note that the symbolic regression routines exposed in `genetic.h` are general, and can be used as a sub-routine in any data science pipeline (pending a Cython wrapper to Python/Torch).
